@@ -1,0 +1,20 @@
+fragment BasicMediaListEntry on MediaList {
+    id
+    status
+    score
+    advancedScores
+    progress
+    progressVolumes
+    repeat
+    private
+    hiddenFromStatusLists
+    notes
+}
+
+fragment CommonMediaListEntry on MediaList {
+    ...BasicMediaListEntry
+    mediaId
+    media {
+        ...MediaSmall
+    }
+}

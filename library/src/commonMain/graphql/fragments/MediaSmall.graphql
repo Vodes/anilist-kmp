@@ -1,0 +1,28 @@
+fragment MediaSmall on Media {
+    id
+    idMal
+    format
+    status
+    title {
+        romaji
+        english
+        native
+        userPreferred
+    }
+    season
+    seasonYear
+    coverImage {
+        extraLarge
+        large
+    }
+    mediaListEntry {
+        status
+        private
+        progress
+    }
+    startDate {
+        year
+        month
+        day
+    }
+}

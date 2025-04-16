@@ -1,0 +1,67 @@
+fragment MediaBig on Media {
+    id
+    idMal
+    format
+    status
+    episodes
+    bannerImage
+    coverImage {
+        extraLarge
+        large
+        medium
+        color
+    }
+    title {
+        romaji
+        english
+        native
+        userPreferred
+    }
+    description
+    startDate {
+        year
+        month
+        day
+    }
+    season
+    seasonYear
+    averageScore
+    meanScore
+    countryOfOrigin
+    rankings {
+        rank
+        type
+        allTime
+    }
+    genres
+    synonyms
+    tags {
+        id
+        name
+        description
+        category
+        rank
+        isGeneralSpoiler
+        isMediaSpoiler
+        isAdult
+    }
+    characters(
+        sort: FAVOURITES_DESC,
+        page: 0,
+        perPage: 10
+    ) {
+        nodes {
+            ...CharacterSmall
+        }
+    }
+    studios(sort: [FAVOURITES_DESC], isMain: true) {
+        nodes {
+            name
+        }
+    }
+    trailer {
+        id
+        site
+        thumbnail
+    }
+}

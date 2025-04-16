@@ -1,0 +1,75 @@
+query UserQuery(
+    $id: Int
+) {
+    user: User(
+        id: $id
+    ) {
+        ...User
+    }
+}
+
+query UserSearch(
+    $search: String,
+    $sort: [UserSort],
+    $isModerator: Boolean,
+    $page: Int = 0,
+    $perPage: Int = 50
+) {
+    Page(page: $page, perPage: $perPage) {
+        users(name: $search, isModerator: $isModerator, sort: $sort) {
+            ...User
+        }
+        pageInfo {
+            currentPage
+            hasNextPage
+            total
+        }
+    }
+}
+
+query Viewer {
+    viewer: Viewer {
+        ...User
+    }
+}
+
+query UserMediaList(
+    $userId: Int,
+    $type: MediaType = ANIME,
+    $sort: [MediaListSort] = [STATUS, UPDATED_TIME_DESC],
+    $status: MediaListStatus,
+    $mediaIdIn: [Int],
+    $page: Int = 0,
+    $perPage: Int = 50
+) {
+    Page(page: $page, perPage: $perPage) {
+        mediaList(userId: $userId, type: $type, status: $status, sort: $sort, mediaId_in: $mediaIdIn) {
+            ...CommonMediaListEntry
+        }
+        pageInfo {
+            currentPage
+            hasNextPage
+            total
+        }
+    }
+}
+
+query UserMediaListCollection(
+    $userId: Int,
+    $type: MediaType = ANIME,
+    $sort: [MediaListSort] = [UPDATED_TIME_DESC],
+    $status: MediaListStatus,
+    $chunk: Int,
+    $perChunk: Int = 50,
+) {
+    MediaListCollection(userId: $userId, type: $type, chunk: $chunk, perChunk: $perChunk, sort: $sort, status: $status) {
+        lists {
+            name
+            isCustomList
+            entries {
+                ...CommonMediaListEntry
+            }
+        }
+        hasNextChunk
+    }
+}

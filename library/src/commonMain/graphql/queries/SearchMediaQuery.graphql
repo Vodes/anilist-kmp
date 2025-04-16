@@ -1,0 +1,80 @@
+query SearchMedia(
+    $search: String
+    $type: MediaType = ANIME,
+    $sort: [MediaSort] = [POPULARITY_DESC],
+    $season: MediaSeason
+    $seasonYear: Int
+    $format: MediaFormat
+    $status: MediaStatus
+    $formatIn: [MediaFormat],
+    $statusIn: [MediaStatus],
+    $sourceIn: [MediaSource],
+    $idIn: [Int],
+    $idNotIn: [Int],
+    $onList: Boolean,
+    $page: Int = 0,
+    $perPage: Int = 50,
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        media(
+            type: $type,
+            sort: $sort,
+            search: $search,
+            format_in: $formatIn,
+            status_in: $statusIn,
+            source_in: $sourceIn,
+            id_in: $idIn,
+            id_not_in: $idNotIn,
+            season: $season,
+            seasonYear: $seasonYear,
+            format: $format,
+            status: $status,
+            onList: $onList,
+        ) {
+            ...MediaBig
+        }
+    }
+}
+
+query SearchMediaSmall(
+    $search: String
+    $type: MediaType = ANIME,
+    $sort: [MediaSort] = [POPULARITY_DESC],
+    $season: MediaSeason
+    $seasonYear: Int
+    $format: MediaFormat
+    $status: MediaStatus
+    $formatIn: [MediaFormat],
+    $statusIn: [MediaStatus],
+    $sourceIn: [MediaSource],
+    $idIn: [Int],
+    $idNotIn: [Int],
+    $onList: Boolean,
+) {
+    Page {
+        media(
+            type: $type,
+            sort: $sort,
+            search: $search,
+            format_in: $formatIn,
+            status_in: $statusIn,
+            source_in: $sourceIn,
+            id_in: $idIn,
+            id_not_in: $idNotIn,
+            season: $season,
+            seasonYear: $seasonYear,
+            format: $format,
+            status: $status,
+            onList: $onList,
+        ) {
+            ...MediaSmall
+        }
+    }
+}

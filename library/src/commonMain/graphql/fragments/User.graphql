@@ -1,0 +1,37 @@
+fragment User on User {
+    id
+    name
+    about
+    avatar {
+        large
+    }
+    bannerImage
+    statistics {
+        anime {
+            count
+            minutesWatched
+            meanScore
+            genres {
+                genre
+                count
+            }
+        }
+    }
+    favourites {
+        anime(page: 1, perPage: 10) {
+            nodes {
+                ...MediaSmall
+            }
+        }
+        manga(page: 1, perPage: 10) {
+            nodes {
+                ...MediaSmall
+            }
+        }
+        characters(page: 1, perPage: 10) {
+            nodes {
+                ...CharacterSmall
+            }
+        }
+    }
+}
