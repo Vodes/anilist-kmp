@@ -1,5 +1,6 @@
 import kotlinx.coroutines.runBlocking
 import pw.vodes.anilistkmp.AnilistApiClient
+import pw.vodes.anilistkmp.ext.searchMedia
 import pw.vodes.anilistkmp.graphql.type.MediaType
 import kotlin.test.Test
 import kotlin.test.assertTrue

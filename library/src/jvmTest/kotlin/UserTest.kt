@@ -1,5 +1,7 @@
 import kotlinx.coroutines.runBlocking
 import pw.vodes.anilistkmp.AnilistApiClient
+import pw.vodes.anilistkmp.ext.fetchUserMediaList
+import pw.vodes.anilistkmp.ext.searchUser
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
