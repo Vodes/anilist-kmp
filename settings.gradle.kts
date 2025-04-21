@@ -14,4 +14,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "anilist-kmp"
-include(":library")
+include(":anilist-kmp")

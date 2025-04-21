@@ -12,7 +12,7 @@ group = "pw.vodes"
 version = "0.0.1"
 
 kotlin {
-    jvm()
+    jvm { withSourcesJar() }
     androidTarget {
         publishLibraryVariants("release")
         compilerOptions {
