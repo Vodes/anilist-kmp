@@ -1,5 +1,6 @@
 package pw.vodes.anilistkmp.ext
 
+import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.cache.normalized.FetchPolicy
 import com.apollographql.apollo.cache.normalized.fetchPolicy
 import pw.vodes.anilistkmp.AnilistApiClient
@@ -29,6 +30,7 @@ import pw.vodes.anilistkmp.graphql.type.*
  * @param onList The media must be on the currently authenticated user's list.
  * @param page The page to return
  * @param perPage The amount of media fetched per page. Defaults to 50 in most queries.
+ * @param configure A function to customize the query behavior. May include a fetchPolicy by default.
  *
  * @return [pw.vodes.anilistkmp.ApolloResponse] with a list of MediaBig if any.
  */
@@ -48,6 +50,7 @@ suspend fun AnilistApiClient.searchMedia(
     onList: Boolean? = null,
     page: Int? = null,
     perPage: Int? = null,
+    configure: ApolloCall<SearchMediaQuery.Data>.() -> Unit = { fetchPolicy(FetchPolicy.CacheFirst) },
 ): ApolloResponse<List<MediaBig>> {
     val query = SearchMediaQuery.Builder().type(type).apply {
         search?.let { search(it) }
@@ -65,7 +68,7 @@ suspend fun AnilistApiClient.searchMedia(
         page?.let { page(it) }
         perPage?.let { perPage(it) }
     }.build()
-    val response = apolloClient.query(query).fetchPolicy(FetchPolicy.CacheFirst).execute()
+    val response = apolloClient.query(query).apply(configure).execute()
     val media = response.data?.Page?.media?.mapNotNull { it?.mediaBig } ?: emptyList()
     val pageData = response.data?.Page?.pageInfo?.let {
         PageData(it.currentPage ?: 0, it.total ?: 1, it.hasNextPage ?: false)
@@ -90,6 +93,7 @@ suspend fun AnilistApiClient.searchMedia(
  * @param idIn The media ID must be one of these
  * @param idNotIn The media ID must NOT be one of these
  * @param onList The media must be on the currently authenticated user's list.
+ * @param configure A function to customize the query behavior. May include a fetchPolicy by default.
  *
  * @return [pw.vodes.anilistkmp.ApolloResponse] with a list of MediaSmall if any.
  */
@@ -107,6 +111,7 @@ suspend fun AnilistApiClient.searchMediaSmall(
     idIn: List<Int>? = null,
     idNotIn: List<Int>? = null,
     onList: Boolean? = null,
+    configure: ApolloCall<SearchMediaSmallQuery.Data>.() -> Unit = { fetchPolicy(FetchPolicy.CacheFirst) },
 ): ApolloResponse<List<MediaSmall>> {
     val query = SearchMediaSmallQuery.Builder().type(type).apply {
         search?.let { search(it) }
@@ -122,7 +127,7 @@ suspend fun AnilistApiClient.searchMediaSmall(
         idNotIn?.let { idNotIn(it) }
         onList?.let { onList(it) }
     }.build()
-    val response = apolloClient.query(query).fetchPolicy(FetchPolicy.CacheFirst).execute()
+    val response = apolloClient.query(query).apply(configure).execute()
     val media = response.data?.Page?.media?.mapNotNull { it?.mediaSmall } ?: emptyList()
     return ApolloResponse(media, null, response.exception, response.errors)
 }
@@ -132,11 +137,17 @@ suspend fun AnilistApiClient.searchMediaSmall(
  *
  * @param id ID of the media.
  * @param type Type of media
+ * @param configure A function to customize the query behavior. May include a fetchPolicy by default.
+ *
  * @return [pw.vodes.anilistkmp.ApolloResponse] with a MediaBig class if any.
  */
-suspend fun AnilistApiClient.fetchMediaByID(id: Int, type: MediaType = MediaType.ANIME): ApolloResponse<MediaBig?> {
+suspend fun AnilistApiClient.fetchMediaByID(
+    id: Int,
+    type: MediaType = MediaType.ANIME,
+    configure: ApolloCall<MediaQuery.Data>.() -> Unit = { fetchPolicy(FetchPolicy.CacheFirst) },
+): ApolloResponse<MediaBig?> {
     val query = MediaQuery.Builder().id(id).type(type).build()
-    val response = apolloClient.query(query).fetchPolicy(FetchPolicy.CacheFirst).execute()
+    val response = apolloClient.query(query).apply(configure).execute()
     val media = response.data?.media?.mediaBig
     return ApolloResponse(media, null, response.exception, response.errors)
 }
