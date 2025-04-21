@@ -5,11 +5,11 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.apollo)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.vanniktech.mavenPublish)
+    `maven-publish`
 }
 
 group = "pw.vodes"
-version = "0.0.1-SNAPSHOT1"
+version = "0.0.1"
 
 kotlin {
     jvm()
@@ -59,5 +59,24 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "Styx"
+            url = if (version.toString().contains("-SNAPSHOT", true))
+                uri("https://repo.styx.moe/snapshots")
+            else
+                uri("https://repo.styx.moe/releases")
+            credentials {
+                username = System.getenv("STYX_REPO_TOKEN")
+                password = System.getenv("STYX_REPO_SECRET")
+            }
+            authentication {
+                create<BasicAuthentication>("basic")
+            }
+        }
     }
 }
