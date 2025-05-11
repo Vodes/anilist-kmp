@@ -1,0 +1,49 @@
+mutation SaveMediaListEntryMutation(
+    $id: Int,
+    $mediaId: Int,
+    $status: MediaListStatus,
+    $score: Float,
+    $progress: Int,
+    $notes: String,
+    $hiddenFromStatusLists: Boolean,
+) {
+    SaveMediaListEntry(
+        id: $id,
+        mediaId: $mediaId,
+        status: $status,
+        score: $score,
+        progress: $progress,
+        notes: $notes,
+        hiddenFromStatusLists: $hiddenFromStatusLists,
+    ) {
+        id
+        status
+        score
+        progress
+        progressVolumes
+        repeat
+        priority
+        private
+        notes
+        hiddenFromStatusLists
+        customLists
+        advancedScores
+        startedAt {
+            year
+            month
+            day
+        }
+        completedAt {
+            year
+            month
+            day
+        }
+        updatedAt
+        createdAt
+        media {
+            id
+            type
+            isFavourite
+        }
+    }
+}
