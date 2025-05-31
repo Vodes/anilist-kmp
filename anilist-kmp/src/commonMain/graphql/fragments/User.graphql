@@ -6,6 +6,9 @@ fragment User on User {
         large
     }
     bannerImage
+    mediaListOptions {
+        scoreFormat
+    }
     statistics {
         anime {
             count
